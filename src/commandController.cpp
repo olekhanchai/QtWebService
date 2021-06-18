@@ -7,6 +7,7 @@ CommandController::CommandController(QObject* parent)
     : HttpRequestHandler(parent) {
     connect(m_serial, &QSerialPort::errorOccurred, this, handleError);
     connect(m_serial, &QSerialPort::readyRead, this, readData);
+    m_serial = new QSerialPort();
 }
 
 void CommandController::service(HttpRequest &request, HttpResponse &response) {
@@ -16,10 +17,8 @@ void CommandController::service(HttpRequest &request, HttpResponse &response) {
     if (!opened) {
         openSerialPort();
     }
-    if (inputData == "1") {
-        m_serial->write("P10 R1 S0");
-    } else {
-        m_serial->write("P10 R1 S1");
+    if (inputData.length() > 0) {
+        m_serial->write(inputData.toLatin1()+"\r\n");
     }
     response.write(inputData.toLatin1(),true);
 }

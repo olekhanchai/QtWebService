@@ -18,7 +18,7 @@ void CommandController::service(HttpRequest &request, HttpResponse &response) {
         openSerialPort();
     }
     if (inputData.length() > 0) {
-        m_serial->write(inputData.toLatin1()+"\r\n");
+        m_serial->write(QString().toLatin1().fromBase64(inputData.toLatin1())+"\r\n");
     }
     response.write(inputData.toLatin1(),true);
 }

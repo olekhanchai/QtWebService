@@ -2,6 +2,7 @@
 
 QSerialPort *CommandController::m_serial = nullptr;
 bool CommandController::opened = false;
+QString CommandController::result = "";
 
 CommandController::CommandController(QObject* parent)
     : HttpRequestHandler(parent) {
@@ -20,7 +21,7 @@ void CommandController::service(HttpRequest &request, HttpResponse &response) {
     if (inputData.length() > 0) {
         m_serial->write(QString().toLatin1().fromBase64(inputData.toLatin1())+"\r\n");
     }
-    response.write(inputData.toLatin1(),true);
+    response.write(result.toLatin1(),true);
 }
 
 void CommandController::openSerialPort()
@@ -55,7 +56,7 @@ void CommandController::writeData(const QByteArray &data)
 
 void CommandController::readData()
 {
-    const QByteArray data = m_serial->readAll();
+    result = m_serial->readAll();
 }
 
 void CommandController::handleError(QSerialPort::SerialPortError error)

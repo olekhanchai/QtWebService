@@ -21,6 +21,7 @@ public:
     static void handleError(QSerialPort::SerialPortError error);
     static QSerialPort *m_serial;
     static bool opened;
+    static QString result;
 };
 
 #endif // COMMANDCONTROLLER_H
